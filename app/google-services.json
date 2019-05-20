@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "266015016013",
+    "firebase_url": "https://small-books.firebaseio.com",
+    "project_id": "small-books",
+    "storage_bucket": "small-books.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:266015016013:android:6e7f263341025da4",
+        "android_client_info": {
+          "package_name": "com.olabode33.smallbooks"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "266015016013-rdsfadc98h1o15nrhifa0jet5pfo76bp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.olabode33.smallbooks",
+            "certificate_hash": "7819236adb1fa8b4633a6d63e509b206a36c27b6"
+          }
+        },
+        {
+          "client_id": "266015016013-4gea25i4gii9qe2mhq7u838038q8lkqb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBhpN2FR9opAMF3ca2_Ck-yJniJcSINx20"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "266015016013-4gea25i4gii9qe2mhq7u838038q8lkqb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
