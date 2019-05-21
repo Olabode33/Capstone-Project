@@ -16,6 +16,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -32,6 +34,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthCredential;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -40,6 +43,11 @@ public class MainActivity extends AppCompatActivity
 
     private FirebaseAuth mAuth;
     FirebaseAuth.AuthStateListener mAuthStateListener;
+
+
+    private TextView mUserNameTextView;
+    private TextView mUserEmailTextView;
+    private ImageView mUserProfileImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +76,12 @@ public class MainActivity extends AppCompatActivity
 
         //TODO: Add Sign-out Button
 
+
+        View navigationViewHeader = navigationView.getHeaderView(0);
+        mUserEmailTextView = navigationViewHeader.findViewById(R.id.user_email_textView);
+        mUserNameTextView = navigationViewHeader.findViewById(R.id.user_name_textView);
+        mUserProfileImageView = navigationView.findViewById(R.id.user_profile_imageView);
+
         FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance();
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
@@ -75,6 +89,15 @@ public class MainActivity extends AppCompatActivity
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if (firebaseAuth.getCurrentUser() == null) {
                     startActivity(new Intent(MainActivity.this, SignInActivity.class));
+                } else {
+                    FirebaseUser user = mAuth.getCurrentUser();
+                    mUserNameTextView.setText(user.getDisplayName());
+                    mUserEmailTextView.setText(user.getEmail());
+                    Picasso.get()
+                            .load(user.getPhotoUrl())
+                            .centerCrop()
+                            .placeholder(R.mipmap.ic_launcher_round)
+                            .into(mUserProfileImageView);
                 }
             }
         };
