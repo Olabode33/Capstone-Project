@@ -1,4 +1,4 @@
-package com.olabode33.smallbooks;
+package com.olabode33.smallbooks.ui;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -7,27 +7,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
-import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
+import com.olabode33.smallbooks.R;
 
 import java.util.Arrays;
 import java.util.List;
@@ -46,9 +37,6 @@ public class SignInActivity extends AppCompatActivity {
 
     @BindView(R.id.sign_in_button) SignInButton mSignInButton;
     @BindView(R.id.sign_progress_bar) ProgressBar mProgressBar;
-//    @BindView(R.id.user_name_textView) TextView mUserNameTextView;
-//    @BindView(R.id.user_email_textView) TextView mUserEmailTextView;
-//    @BindView(R.id.user_profile_imageView) ImageView mUserProfileImageView;
 
     @Override
     protected void onStart() {
@@ -97,14 +85,11 @@ public class SignInActivity extends AppCompatActivity {
                 .build();
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-        signIn();
+        //signIn();
     }
 
     private void signIn() {
-        mProgressBar.setVisibility(View.VISIBLE);
-//        Intent intent = mGoogleSignInClient.getSignInIntent();
-//        startActivityForResult(intent, RC_SIGN_IN);
-
+        //mProgressBar.setVisibility(View.VISIBLE);
         List<AuthUI.IdpConfig> providers = Arrays.asList(new AuthUI.IdpConfig.GoogleBuilder().build());
         startActivityForResult(
                 AuthUI.getInstance()
@@ -120,13 +105,6 @@ public class SignInActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == RC_SIGN_IN) {
-//            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-//            try {
-//                GoogleSignInAccount account = task.getResult(ApiException.class);
-//                firebaseAuthWithGoogle(account);
-//            } catch (Exception e) {
-//                Log.d(TAG, getString(R.string.googleSignInFailed) + " Error Message: " + e.getMessage());
-//            }
             mProgressBar.setVisibility(View.GONE);
             IdpResponse response = IdpResponse.fromResultIntent(data);
             if (resultCode == RESULT_OK) {
@@ -145,24 +123,7 @@ public class SignInActivity extends AppCompatActivity {
             Log.d(TAG, user.getDisplayName());
             Log.d(TAG, user.getEmail());
             mProgressBar.setVisibility(View.GONE);
-//            mUserNameTextView.setText(user.getDisplayName());
-//            mUserEmailTextView.setText(user.getEmail());
         }
-    }
-
-    private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
-        AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
-        mAuth.signInWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                mProgressBar.setVisibility(View.GONE);
-                if (task.isSuccessful()) {
-                    Log.d(TAG, "Signed in success");
-                } else {
-                    Toast.makeText(SignInActivity.this, "Authentication Failed", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
     }
 
 }

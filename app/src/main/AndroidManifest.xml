@@ -14,9 +14,9 @@
         android:theme="@style/AppTheme"
         tools:replace="android:appComponentFactory"
         android:appComponentFactory="@string/action_settings">
-        <activity android:name=".SignInActivity"></activity>
+        <activity android:name=".ui.SignInActivity"></activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
