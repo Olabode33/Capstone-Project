@@ -1,6 +1,7 @@
 package com.olabode33.smallbooks.ui;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -18,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,7 +33,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, CreateEditTransactionFragment.OnFragmentInteractionListener{
 
     private static final String TAG = "MainActivityClass";
 
@@ -59,7 +61,7 @@ public class MainActivity extends AppCompatActivity
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Fragment fragment = new CreateEditTransactionFragment();
+                Fragment fragment = CreateEditTransactionFragment.newInstance("", "");
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.content_frame, fragment);
                 ft.commit();
@@ -171,5 +173,11 @@ public class MainActivity extends AppCompatActivity
         //DrawerLayout drawer = findViewById(R.id.drawer_layout);
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+        Toast toast = Toast.makeText(this, getString(R.string.app_name), Toast.LENGTH_SHORT);
+        toast.show();
     }
 }
