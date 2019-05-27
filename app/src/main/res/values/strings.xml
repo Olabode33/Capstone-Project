@@ -8,6 +8,12 @@
     <string name="action_settings">Settings</string>
     <string name="googleSignInFailed">Google sign in failed</string>
     <string name="firebaseAuthWithGoogle">Firebase Authentication with Google</string>
+    <string name="CategoryLabel">Category</string>
+    <string name="DateLabel">Date</string>
+    <string name="AmountLabel">Amount</string>
+    <string name="MemoLabel">Memo</string>
+    <string name="TypeLabel">Type</string>
+    <string name="BtnSaveLabel">Save</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
