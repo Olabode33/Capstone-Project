@@ -15,6 +15,10 @@
     <string name="TypeLabel">Type</string>
     <string name="BtnSaveLabel">Save</string>
     <string name="firebase_database_reference">users</string>
+    <string-array name="type_array">
+        <item>Expense</item>
+        <item>Income</item>
+    </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
