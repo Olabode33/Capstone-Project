@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/list_item_padding_vertical"
+    android:paddingTop="@dimen/list_item_padding_vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/list_item_title_text_size"
+            android:id="@+id/tv_transaction_amount"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@android:color/tertiary_text_light"
+            android:textSize="@dimen/list_item_title_text_size"
+            android:id="@+id/tv_transaction_date"
+            android:gravity="right"/>
+    </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/tertiary_text_light"
+        android:textSize="@dimen/list_item_sub_title_text_size"
+        android:textStyle="italic"
+        android:id="@+id/tv_transaction_category"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="marquee"
+        android:singleLine="true"
+        android:textSize="@dimen/list_item_sub_title_text_size"
+        android:id="@+id/tv_transaction_memo"/>
+</LinearLayout>

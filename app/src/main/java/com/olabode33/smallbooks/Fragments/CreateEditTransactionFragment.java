@@ -26,6 +26,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.olabode33.smallbooks.Interfaces.OnFragmentInteractionListener;
 import com.olabode33.smallbooks.Model.Transaction;
 import com.olabode33.smallbooks.R;
 import com.olabode33.smallbooks.ui.SignInActivity;
@@ -91,8 +92,6 @@ public class CreateEditTransactionFragment extends Fragment implements AdapterVi
 
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mUserTransactionsDatabaseRef = mFirebaseDatabase.getReference().child(getString(R.string.firebase_database_reference)).child(mFirebaseUser.getUid());
-
-
     }
 
     @Override
@@ -148,13 +147,15 @@ public class CreateEditTransactionFragment extends Fragment implements AdapterVi
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Toast.makeText(getContext(), "Posted successfully!", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getContext(), SignInActivity.class);
+                        startActivity(intent);
+                        Toast.makeText(getContext(), getString(R.string.transaction_posted_successfully), Toast.LENGTH_SHORT).show();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getContext(), "Error posting transaction: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), getString(R.string.transaction_posting_error) + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -196,8 +197,4 @@ public class CreateEditTransactionFragment extends Fragment implements AdapterVi
 
     }
 
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
 }

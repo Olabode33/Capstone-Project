@@ -24,8 +24,12 @@ import android.widget.Toast;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.olabode33.smallbooks.Common.CircleTransformation;
+import com.olabode33.smallbooks.Fragments.AllEntriesFragment;
 import com.olabode33.smallbooks.Fragments.CreateEditTransactionFragment;
+import com.olabode33.smallbooks.Interfaces.OnFragmentInteractionListener;
 import com.olabode33.smallbooks.R;
 import com.squareup.picasso.Picasso;
 
@@ -33,9 +37,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, CreateEditTransactionFragment.OnFragmentInteractionListener{
+        implements NavigationView.OnNavigationItemSelectedListener, OnFragmentInteractionListener {
 
     private static final String TAG = "MainActivityClass";
+    private static Boolean persistenceEnabled = false;
 
     private FirebaseAuth mAuth;
     FirebaseAuth.AuthStateListener mAuthStateListener;
@@ -54,39 +59,25 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        //Toolbar toolbar = findViewById(R.id.toolbar);
+
         setSupportActionBar(mToolbar);
 
-        //FloatingActionButton fab = findViewById(R.id.fab);
-        mFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Fragment fragment = CreateEditTransactionFragment.newInstance("", "");
-                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.content_frame, fragment);
-                ft.commit();
-
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
-        //DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, mDrawerLayout, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        //NavigationView navigationView = findViewById(R.id.nav_view);
         mNavigationView.setNavigationItemSelectedListener(this);
-
-        //TODO: Add Sign-out Button
-
 
         View navigationViewHeader = mNavigationView.getHeaderView(0);
         mUserEmailTextView = navigationViewHeader.findViewById(R.id.user_email_textView);
         mUserNameTextView = navigationViewHeader.findViewById(R.id.user_name_textView);
         mUserProfileImageView = navigationViewHeader.findViewById(R.id.user_profile_imageView);
+
+        if(!persistenceEnabled) {
+            FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+            persistenceEnabled = true;
+        }
 
         FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance();
@@ -110,6 +101,17 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         };
+
+        mFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment fragment = CreateEditTransactionFragment.newInstance("", "");
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.content_frame, fragment);
+                ft.commit();
+
+            }
+        });
     }
 
     @Override
@@ -155,11 +157,13 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        Fragment fragment = AllEntriesFragment.newInstance();
 
         if (id == R.id.nav_camera) {
             // Handle the camera action
+            fragment = AllEntriesFragment.newInstance();
         } else if (id == R.id.nav_gallery) {
-
+            fragment = CreateEditTransactionFragment.newInstance("", "");
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {
@@ -169,6 +173,10 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_send) {
             mAuth.signOut();
         }
+
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.content_frame, fragment);
+        ft.commit();
 
         //DrawerLayout drawer = findViewById(R.id.drawer_layout);
         mDrawerLayout.closeDrawer(GravityCompat.START);

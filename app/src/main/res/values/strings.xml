@@ -15,6 +15,8 @@
     <string name="TypeLabel">Type</string>
     <string name="BtnSaveLabel">Save</string>
     <string name="firebase_database_reference">users</string>
+    <string name="transaction_posted_successfully">Transaction posted successfully!</string>
+    <string name="transaction_posting_error">Error posting transaction: </string>
     <string-array name="type_array">
         <item>Expense</item>
         <item>Income</item>
