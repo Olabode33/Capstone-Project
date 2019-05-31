@@ -47,7 +47,6 @@ public class MainActivity extends AppCompatActivity
 
     @BindView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
     @BindView(R.id.toolbar) Toolbar mToolbar;
-    @BindView(R.id.fab) FloatingActionButton mFab;
     @BindView(R.id.nav_view) NavigationView mNavigationView;
 
     private TextView mUserNameTextView;
@@ -101,17 +100,6 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         };
-
-        mFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Fragment fragment = CreateEditTransactionFragment.newInstance("", "");
-                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.content_frame, fragment);
-                ft.commit();
-
-            }
-        });
     }
 
     @Override
@@ -187,5 +175,21 @@ public class MainActivity extends AppCompatActivity
     public void onFragmentInteraction(Uri uri) {
         Toast toast = Toast.makeText(this, getString(R.string.app_name), Toast.LENGTH_SHORT);
         toast.show();
+    }
+
+    @Override
+    public void onTransactionSaved() {
+        Fragment fragment = AllEntriesFragment.newInstance();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.content_frame, fragment);
+        ft.commit();
+    }
+
+    @Override
+    public void onAddNewTransaction() {
+        Fragment fragment = CreateEditTransactionFragment.newInstance("", "");
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.content_frame, fragment);
+        ft.commit();
     }
 }

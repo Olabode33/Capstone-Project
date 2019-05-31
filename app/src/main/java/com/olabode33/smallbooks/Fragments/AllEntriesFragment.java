@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -48,6 +50,7 @@ public class AllEntriesFragment extends Fragment {
     View mView;
     @BindView(R.id.rv_transactions_list) RecyclerView mTransactionsRecyclerView;
     @BindView(R.id.pb_loading_transactions) ProgressBar mLoadingProgressBar;
+    @BindView(R.id.fab) FloatingActionButton mFab;
 
     public AllEntriesFragment() {
         // Required empty public constructor
@@ -89,6 +92,13 @@ public class AllEntriesFragment extends Fragment {
         ButterKnife.bind(this, mView);
         retrieveTransactions();
 
+        mFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mListener.onAddNewTransaction();
+            }
+        });
+
         return mView;
     }
 
@@ -106,6 +116,7 @@ public class AllEntriesFragment extends Fragment {
 
         FirebaseRecyclerOptions<Transaction> options = new FirebaseRecyclerOptions.Builder<Transaction>()
                 .setQuery(mUserTransactionsDatabaseRef, Transaction.class)
+                .setLifecycleOwner(this)
                 .build();
 
         mFirebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Transaction, TransactionEntryViewHolder>(options) {

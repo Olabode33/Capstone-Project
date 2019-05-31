@@ -7,6 +7,9 @@ import android.widget.TextView;
 
 import com.olabode33.smallbooks.R;
 
+import java.text.NumberFormat;
+import java.util.Locale;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -15,7 +18,8 @@ public class TransactionEntryViewHolder extends RecyclerView.ViewHolder {
     public View mView;
 
     public void setAmountTextView(double amount) {
-        mAmountTextView.setText(String.valueOf(amount));
+        String formattedAmount = NumberFormat.getNumberInstance(Locale.getDefault()).format(amount);
+        mAmountTextView.setText(formattedAmount);
     }
 
     public void setDateTextView(String date) {

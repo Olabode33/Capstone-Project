@@ -24,8 +24,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.olabode33.smallbooks.Interfaces.OnFragmentInteractionListener;
 import com.olabode33.smallbooks.Model.Transaction;
 import com.olabode33.smallbooks.R;
@@ -47,6 +50,7 @@ public class CreateEditTransactionFragment extends Fragment implements AdapterVi
 
     private OnFragmentInteractionListener mListener;
 
+
     @BindView(R.id.type_spinner) Spinner mTypeSpinner;
     @BindView(R.id.category_editText) EditText mCategoryET;
     @BindView(R.id.date_editText) EditText mDateET;
@@ -60,6 +64,7 @@ public class CreateEditTransactionFragment extends Fragment implements AdapterVi
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mUserTransactionsDatabaseRef;
     private FirebaseUser mFirebaseUser;
+    private ValueEventListener mValueEventListener;
 
 
     public CreateEditTransactionFragment() {
@@ -147,9 +152,8 @@ public class CreateEditTransactionFragment extends Fragment implements AdapterVi
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Intent intent = new Intent(getContext(), SignInActivity.class);
-                        startActivity(intent);
-                        Toast.makeText(getContext(), getString(R.string.transaction_posted_successfully), Toast.LENGTH_SHORT).show();
+                        Log.i("CreateEditFragment", "addOnSuccessListener...");
+                        transactionSaved();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -158,12 +162,13 @@ public class CreateEditTransactionFragment extends Fragment implements AdapterVi
                         Toast.makeText(getContext(), getString(R.string.transaction_posting_error) + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
+        attachChildEventListener();
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
+    public void transactionSaved() {
+        Toast.makeText(getContext(), getString(R.string.transaction_posted_successfully), Toast.LENGTH_SHORT).show();
         if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+            mListener.onTransactionSaved();
         }
     }
 
@@ -195,6 +200,23 @@ public class CreateEditTransactionFragment extends Fragment implements AdapterVi
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+    private void attachChildEventListener(){
+        if (mValueEventListener == null) {
+            mValueEventListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    transactionSaved();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Log.w("CreateEditTrans: ", "loadPost:onCancelled", databaseError.toException());
+                }
+            };
+            mUserTransactionsDatabaseRef.addListenerForSingleValueEvent(mValueEventListener);
+        }
     }
 
 }
